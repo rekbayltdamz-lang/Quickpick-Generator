@@ -1,65 +1,198 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Teatime Draw - Star49s</title>
-
-  <!-- Default meta description (script will update daily with date) -->
-  <meta name="description" content="Star49s QuickPick generator - UK49s Teatime Draw. Updated daily.">
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KwikPick Teatime Generator — 5 Number QuickPick</title>
+  <meta name="description" content="Star49s Teatime QuickPick generator for UK49s. Generate 5 random numbers easily. Updated daily.">
   <script>
-    // Update meta description with current date for freshness
+    // Update meta description with today's date
     document.addEventListener("DOMContentLoaded", () => {
       const today = new Date();
-      const formattedDate = today.toLocaleDateString("en-GB"); // DD/MM/YYYY format
+      const formattedDate = today.toLocaleDateString("en-GB");
       document.querySelector("meta[name='description']").setAttribute(
         "content",
-        `Star49s QuickPick generator - UK49s Teatime Draw updated for ${formattedDate}`
+        `Star49s Teatime QuickPick generator - Updated for ${formattedDate}`
       );
     });
   </script>
-
   <style>
-    /* Basic styling for clean layout */
-    body {font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 16px; line-height: 1.6;}
-    nav a {margin-right: 12px; text-decoration: none; color: #0b7cff; font-weight: bold;}
-    iframe {width: 100%; height: 420px; border: 1px solid #ccc; border-radius: 8px; margin-top: 16px;}
-    h1 {color: #333;}
-    h2 {margin-top: 28px;}
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.4}
+    body{max-width:900px;margin:24px auto;padding:18px;color:#111}
+    header{display:flex;align-items:center;justify-content:space-between}
+    h1{font-size:1.25rem;margin:0}
+    .card{border:1px solid #e4e4e4;border-radius:8px;padding:16px;margin-top:16px;background:#fff}
+    label{display:block;margin-top:8px}
+    select,input[type=number]{padding:8px;margin-top:6px;border-radius:6px;border:1px solid #ccc;width:100%}
+    button{padding:10px 14px;border-radius:8px;border:0;background:#0b7cff;color:#fff;font-weight:600;cursor:pointer}
+    button.secondary{background:#6b7280}
+    .numbers{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+    .chip{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:#f3f4f6;border:1px solid #ddd}
+    pre{background:#f8fafc;padding:12px;border-radius:6px;overflow:auto}
+    .row{display:flex;gap:8px}
+    .meta{font-size:0.95rem;color:#374151;margin-top:8px}
+    .doc h2{margin-top:18px}
+    footer{margin-top:18px;font-size:0.9rem;color:#6b7280}
+    @media(max-width:520px){.numbers{gap:8px}.chip{width:52px;height:52px}}
   </style>
 </head>
 <body>
-  <!-- Header Section -->
-  <h1>UK49s Teatime Draw</h1>
+  <header>
+    <h1>KwikPick Teatime Generator — 5 Numbers</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <a href="lunchtime.html">Lunchtime</a> |
+      <a href="teatime.html">Teatime</a> |
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-  <!-- Navigation with internal links -->
-  <nav>
-    <a href="index.html">Home</a> |
-    <a href="lunchtime.html">Lunchtime Draw</a> |
-    <a href="teatime.html">Teatime Draw</a> |
-    <a href="contact.html">Contact Us</a>
-  </nav>
+  <section class="card">
+    <label for="drawType">Draw type</label>
+    <select id="drawType" aria-label="Draw type">
+      <option value="teatime">Teatime</option>
+      <option value="lunchtime">Lunchtime</option>
+      <option value="random">Random</option>
+    </select>
 
-  <!-- Page intro text -->
-  <p>
-    Welcome to the <strong>Teatime Draw</strong> page of Roznamcha org.. 
-    Here you can quickly generate 3 random numbers for the UK49s Teatime draw. 
-    This QuickPick tool refreshes daily and keeps your picks simple and fast. 
-    You can also visit our Lunchtime Draw page or go back to the homepage for more options.
-  </p>
+    <label for="min">Min and Max (number range)</label>
+    <div class="row">
+      <input id="min" type="number" min="1" value="1" />
+      <input id="max" type="number" min="5" value="49" />
+    </div>
 
-  <!-- Generator embedded via iframe (from homepage) -->
-  <iframe src="index.html" title="QuickPick Generator - Teatime Draw"></iframe>
+    <div class="row" style="margin-top:10px">
+      <button id="generateBtn">Generate 5 Numbers</button>
+      <button id="copyBtn" class="secondary">Copy</button>
+      <button id="downloadBtn" class="secondary">Download JSON</button>
+    </div>
 
-  <!-- Internal linking for SEO + easy navigation -->
-  <section>
-    <h2>More from Star49s</h2>
-    <ul>
-      <li><a href="lunchtime.html">Try the Lunchtime Draw QuickPick Generator</a></li>
-      <li><a href="index.html">Return to the Homepage</a> for more tools</li>
-      <li><a href="contact.html">Contact Us</a> if you have questions</li>
-    </ul>
+    <div class="numbers" id="numbers" aria-live="polite" style="margin-top:14px">
+      <div class="chip" id="n1">-</div>
+      <div class="chip" id="n2">-</div>
+      <div class="chip" id="n3">-</div>
+      <div class="chip" id="n4">-</div>
+      <div class="chip" id="n5">-</div>
+    </div>
+
+    <div class="meta" id="meta">No pick yet.</div>
   </section>
+
+  <section class="card doc">
+    <h2>Documentation (Teatime QuickPick)</h2>
+    <p><strong>What it does</strong>: This page generates five unique random numbers for the UK49s Teatime draw. The default range is 1–49.</p>
+
+    <h3>Controls</h3>
+    <ul>
+      <li><strong>Draw type</strong>: Select Teatime / Lunchtime / Random (used only in metadata).</li>
+      <li><strong>Min / Max</strong>: Define the number range. Default is 1–49. Must allow at least 5 numbers.</li>
+      <li><strong>Generate 5 Numbers</strong>: Produces 5 unique numbers instantly.</li>
+      <li><strong>Copy</strong>: Copies the result in JSON format.</li>
+      <li><strong>Download JSON</strong>: Saves the generated pick to a file.</li>
+    </ul>
+
+    <h3>Output format (JSON)</h3>
+    <pre id="jsonOut">{
+  "drawType": "teatime",
+  "range": [1,49],
+  "numbers": [7,16,22,34,45],
+  "timestamp": "2025-09-09T10:22:33Z"
+}</pre>
+
+    <h3>Notes</h3>
+    <p>
+      This generator is designed for <strong>UK49s Teatime Draw</strong> players who want an instant random pick.
+      It is not linked with any betting site and is for educational and fun use only.
+    </p>
+  </section>
+
+  <footer>Generated: <span id="generatedAt">never</span></footer>
+
+  <script>
+    function rndInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function uniqueRandoms(count, min, max) {
+      const set = new Set();
+      const attemptsLimit = 10000;
+      let attempts = 0;
+      while (set.size < count && attempts < attemptsLimit) {
+        set.add(rndInt(min, max));
+        attempts++;
+      }
+      if (set.size < count) throw new Error('Range too small for unique picks');
+      return Array.from(set).sort((a,b)=>a-b);
+    }
+
+    const chips = [
+      document.getElementById('n1'),
+      document.getElementById('n2'),
+      document.getElementById('n3'),
+      document.getElementById('n4'),
+      document.getElementById('n5')
+    ];
+    const meta = document.getElementById('meta');
+    const jsonOut = document.getElementById('jsonOut');
+    const generatedAt = document.getElementById('generatedAt');
+
+    document.getElementById('generateBtn').addEventListener('click', ()=>{
+      const drawType = document.getElementById('drawType').value;
+      const min = parseInt(document.getElementById('min').value,10) || 1;
+      const max = parseInt(document.getElementById('max').value,10) || 49;
+      try {
+        if (max - min + 1 < 5) { alert('Range must allow at least 5 unique numbers'); return; }
+        const nums = uniqueRandoms(5, min, max);
+        chips.forEach((chip, i)=> chip.textContent = nums[i] ?? '-');
+        const now = new Date();
+        const iso = now.toISOString();
+        meta.textContent = `Draw: ${drawType} • Range: ${min}-${max} • Generated at ${iso}`;
+        generatedAt.textContent = iso;
+        const out = { drawType, range: [min,max], numbers: nums, timestamp: iso };
+        jsonOut.textContent = JSON.stringify(out, null, 2);
+        try { localStorage.setItem('kwikpick_teatime', JSON.stringify(out)); } catch(e){}
+      } catch(e) {
+        alert('Error: ' + e.message);
+      }
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      const text = jsonOut.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Copied to clipboard');
+      } catch (e) {
+        const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); alert('Copied to clipboard'); } catch(err){ alert('Copy failed'); }
+        ta.remove();
+      }
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', ()=>{
+      const text = jsonOut.textContent;
+      const blob = new Blob([text], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const now = new Date();
+      const name = 'teatime-' + now.toISOString().replace(/[:.]/g,'-') + '.json';
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    window.addEventListener('load', ()=>{
+      try{
+        const last = localStorage.getItem('kwikpick_teatime');
+        if (last) {
+          const data = JSON.parse(last);
+          chips.forEach((chip, i)=> chip.textContent = data.numbers[i] ?? '-');
+          jsonOut.textContent = JSON.stringify(data, null, 2);
+          meta.textContent = `Last: ${data.drawType} • Range: ${data.range[0]}-${data.range[1]} • ${data.timestamp}`;
+          generatedAt.textContent = data.timestamp;
+        }
+      }catch(e){}
+    });
+
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ document.getElementById('generateBtn').click(); }});
+  </script>
 </body>
 </html>
