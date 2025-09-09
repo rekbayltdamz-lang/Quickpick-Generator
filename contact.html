@@ -1,1 +1,54 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact Us — pages.dev</title>
+  <meta name="description" content="">
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date();
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      const formattedDate = today.toLocaleDateString("en-GB", options);
+      document.querySelector("meta[name='description']").setAttribute(
+        "content",
+        `Contact pages.dev team for queries or feedback. Page is updated at ${formattedDate}.`
+      );
+    });
+  </script>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.4}
+    body{max-width:900px;margin:24px auto;padding:18px;color:#111}
+    header{display:flex;align-items:center;justify-content:space-between}
+    h1{font-size:1.25rem;margin:0}
+    .card{border:1px solid #e4e4e4;border-radius:8px;padding:16px;margin-top:16px;background:#fff}
+    nav a{margin-right:12px;text-decoration:none;color:#0b7cff;font-weight:600}
+    footer{margin-top:18px;font-size:0.9rem;color:#6b7280}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Contact Us</h1>
+    <nav>
+      <a href="index.html">Home</a> |
+      <a href="lunchtime.html">Lunchtime</a> |
+      <a href="teatime.html">Teatime</a> |
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="card">
+    <p>If you have any questions or feedback, please reach out to us at:</p>
+    <p>Email: <a href="mailto:info@example.com">info@example.com</a></p>
+  </section>
+
+  <footer>
+    &copy; <span id="year"></span> Star49s — All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
