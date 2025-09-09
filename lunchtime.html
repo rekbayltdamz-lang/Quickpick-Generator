@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KwikPick Generator — 3 Number QuickPick</title>
+  <title>KwikPick Lunchtime Generator — 5 Number QuickPick</title>
   <style>
     :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.4}
     body{max-width:900px;margin:24px auto;padding:18px;color:#111}
@@ -14,7 +14,7 @@
     select,input[type=number]{padding:8px;margin-top:6px;border-radius:6px;border:1px solid #ccc;width:100%}
     button{padding:10px 14px;border-radius:8px;border:0;background:#0b7cff;color:#fff;font-weight:600;cursor:pointer}
     button.secondary{background:#6b7280}
-    .numbers{display:flex;gap:12px;margin-top:12px}
+    .numbers{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
     .chip{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:#f3f4f6;border:1px solid #ddd}
     pre{background:#f8fafc;padding:12px;border-radius:6px;overflow:auto}
     .row{display:flex;gap:8px}
@@ -27,7 +27,7 @@
 </head>
 <body>
   <header>
-  <h1>KwikPick Generator — 3 Numbers</h1>
+  <h1>KwikPick Lunchtime Generator — 5 Numbers</h1>
   <nav>
     <a href="index.html">Home</a> |
     <a href="lunchtime.html">Lunchtime</a> |
@@ -35,5 +35,161 @@
     <a href="contact.html">Contact</a>
   </nav>
 </header>
+
+  <section class="card">
+    <label for="drawType">Draw type</label>
+    <select id="drawType" aria-label="Draw type">
+      <option value="lunchtime">Lunchtime</option>
+      <option value="teatime">Teatime</option>
+      <option value="random">Random</option>
+    </select>
+
+    <label for="min">Min and Max (number range)</label>
+    <div class="row">
+      <input id="min" type="number" min="1" value="1" />
+      <input id="max" type="number" min="5" value="49" />
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <button id="generateBtn">Generate 5 Numbers</button>
+      <button id="copyBtn" class="secondary">Copy</button>
+      <button id="downloadBtn" class="secondary">Download JSON</button>
+    </div>
+
+    <div class="numbers" id="numbers" aria-live="polite" style="margin-top:14px">
+      <div class="chip" id="n1">-</div>
+      <div class="chip" id="n2">-</div>
+      <div class="chip" id="n3">-</div>
+      <div class="chip" id="n4">-</div>
+      <div class="chip" id="n5">-</div>
+    </div>
+
+    <div class="meta" id="meta">No pick yet.</div>
+  </section>
+
+  <section class="card doc">
+    <h2>Documentation (How to use)</h2>
+    <p><strong>What it does</strong>: This page generates five unique random numbers in the chosen range. It's suitable for QuickPick / Lucky Dip style picks. By default the range is 1–49 (UK49s range).</p>
+
+    <h3>Controls</h3>
+    <ul>
+      <li><strong>Draw type</strong>: Select Lunchtime / Teatime / Random. This is for labeling only and saved in the output metadata.</li>
+      <li><strong>Min / Max</strong>: Set your number range. Min must be at least 1 and Max must be at least 5.</li>
+      <li><strong>Generate 5 Numbers</strong>: Creates five unique numbers and shows them in big chips.</li>
+      <li><strong>Copy</strong>: Copies JSON with numbers and metadata to clipboard.</li>
+      <li><strong>Download JSON</strong>: Saves the pick as a small JSON file.</li>
+    </ul>
+
+    <h3>Output format (JSON)</h3>
+    <pre id="jsonOut">{
+  "drawType": "lunchtime",
+  "range": [1,49],
+  "numbers": [5,23,31,37,44],
+  "timestamp": "2025-09-09T10:22:33Z"
+}</pre>
+
+    <h3>How to add this page to GitHub</h3>
+    <ol>
+      <li>Create a repository (e.g., <code>kwikpick</code>).</li>
+      <li>Save this file as <code>index.html</code> in the repo root.</li>
+      <li>Commit and push to GitHub.</li>
+      <li>Enable GitHub Pages in repo Settings → Pages and choose the main branch root. Your page will be live at <code>https://{your-username}.github.io/{repo-name}/</code>.</li>
+    </ol>
+
+    <h3>Embed snippet (to place inside another page)</h3>
+    <pre>&lt;iframe src="/kwikpick/index.html" width="420" height="360" title="KwikPick5"&gt;&lt;/iframe&gt;</pre>
+
+    <h3>License</h3>
+    <p>Use freely — MIT style. Add a LICENSE file if needed.</p>
+  </section>
+
+  <footer>Generated: <span id="generatedAt">never</span></footer>
+
+  <script>
+    function rndInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function uniqueRandoms(count, min, max) {
+      const set = new Set();
+      const attemptsLimit = 10000;
+      let attempts = 0;
+      while (set.size < count && attempts < attemptsLimit) {
+        set.add(rndInt(min, max));
+        attempts++;
+      }
+      if (set.size < count) throw new Error('Range too small for unique picks');
+      return Array.from(set).sort((a,b)=>a-b);
+    }
+
+    const chips = [
+      document.getElementById('n1'),
+      document.getElementById('n2'),
+      document.getElementById('n3'),
+      document.getElementById('n4'),
+      document.getElementById('n5')
+    ];
+    const meta = document.getElementById('meta');
+    const jsonOut = document.getElementById('jsonOut');
+    const generatedAt = document.getElementById('generatedAt');
+
+    document.getElementById('generateBtn').addEventListener('click', ()=>{
+      const drawType = document.getElementById('drawType').value;
+      const min = parseInt(document.getElementById('min').value,10) || 1;
+      const max = parseInt(document.getElementById('max').value,10) || 49;
+      try {
+        if (max - min + 1 < 5) { alert('Range must allow at least 5 unique numbers'); return; }
+        const nums = uniqueRandoms(5, min, max);
+        chips.forEach((chip, i)=> chip.textContent = nums[i] ?? '-');
+        const now = new Date();
+        const iso = now.toISOString();
+        meta.textContent = `Draw: ${drawType} • Range: ${min}-${max} • Generated at ${iso}`;
+        generatedAt.textContent = iso;
+        const out = { drawType, range: [min,max], numbers: nums, timestamp: iso };
+        jsonOut.textContent = JSON.stringify(out, null, 2);
+        try { localStorage.setItem('kwikpick_last', JSON.stringify(out)); } catch(e){}
+      } catch(e) {
+        alert('Error: ' + e.message);
+      }
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', async ()=>{
+      const text = jsonOut.textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Copied to clipboard');
+      } catch (e) {
+        const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); alert('Copied to clipboard'); } catch(err){ alert('Copy failed'); }
+        ta.remove();
+      }
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', ()=>{
+      const text = jsonOut.textContent;
+      const blob = new Blob([text], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const now = new Date();
+      const name = 'kwikpick-' + now.toISOString().replace(/[:.]/g,'-') + '.json';
+      a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    window.addEventListener('load', ()=>{
+      try{
+        const last = localStorage.getItem('kwikpick_last');
+        if (last) {
+          const data = JSON.parse(last);
+          chips.forEach((chip, i)=> chip.textContent = data.numbers[i] ?? '-');
+          jsonOut.textContent = JSON.stringify(data, null, 2);
+          meta.textContent = `Last: ${data.drawType} • Range: ${data.range[0]}-${data.range[1]} • ${data.timestamp}`;
+          generatedAt.textContent = data.timestamp;
+        }
+      }catch(e){}
+    });
+
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ document.getElementById('generateBtn').click(); }});
+  </script>
 </body>
 </html>
