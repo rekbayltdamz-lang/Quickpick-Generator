@@ -1,1 +1,65 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teatime Draw - Star49s</title>
+
+  <!-- Default meta description (script will update daily with date) -->
+  <meta name="description" content="Star49s QuickPick generator - UK49s Teatime Draw. Updated daily.">
+
+  <script>
+    // Update meta description with current date for freshness
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString("en-GB"); // DD/MM/YYYY format
+      document.querySelector("meta[name='description']").setAttribute(
+        "content",
+        `Star49s QuickPick generator - UK49s Teatime Draw updated for ${formattedDate}`
+      );
+    });
+  </script>
+
+  <style>
+    /* Basic styling for clean layout */
+    body {font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 16px; line-height: 1.6;}
+    nav a {margin-right: 12px; text-decoration: none; color: #0b7cff; font-weight: bold;}
+    iframe {width: 100%; height: 420px; border: 1px solid #ccc; border-radius: 8px; margin-top: 16px;}
+    h1 {color: #333;}
+    h2 {margin-top: 28px;}
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <h1>UK49s Teatime Draw</h1>
+
+  <!-- Navigation with internal links -->
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="lunchtime.html">Lunchtime Draw</a> |
+    <a href="teatime.html">Teatime Draw</a> |
+    <a href="contact.html">Contact Us</a>
+  </nav>
+
+  <!-- Page intro text -->
+  <p>
+    Welcome to the <strong>Teatime Draw</strong> page of Roznamcha org.. 
+    Here you can quickly generate 3 random numbers for the UK49s Teatime draw. 
+    This QuickPick tool refreshes daily and keeps your picks simple and fast. 
+    You can also visit our Lunchtime Draw page or go back to the homepage for more options.
+  </p>
+
+  <!-- Generator embedded via iframe (from homepage) -->
+  <iframe src="index.html" title="QuickPick Generator - Teatime Draw"></iframe>
+
+  <!-- Internal linking for SEO + easy navigation -->
+  <section>
+    <h2>More from Star49s</h2>
+    <ul>
+      <li><a href="lunchtime.html">Try the Lunchtime Draw QuickPick Generator</a></li>
+      <li><a href="index.html">Return to the Homepage</a> for more tools</li>
+      <li><a href="contact.html">Contact Us</a> if you have questions</li>
+    </ul>
+  </section>
+</body>
+</html>
