@@ -1,22 +1,39 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lunchtime QuickPick — Star49s</title>
-  <meta name="description" content="Star49s Lunchtime QuickPick generator - updated daily.">
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const today = new Date();
-      const formattedDate = today.toLocaleDateString("en-GB");
-      document.querySelector("meta[name='description']")
-        .setAttribute("content", `Star49s Lunchtime QuickPick generator - Updated for ${formattedDate}`);
-    });
-  </script>
+  <title>KwikPick Generator — 3 Number QuickPick</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.4}
+    body{max-width:900px;margin:24px auto;padding:18px;color:#111}
+    header{display:flex;align-items:center;justify-content:space-between}
+    h1{font-size:1.25rem;margin:0}
+    .card{border:1px solid #e4e4e4;border-radius:8px;padding:16px;margin-top:16px;background:#fff}
+    label{display:block;margin-top:8px}
+    select,input[type=number]{padding:8px;margin-top:6px;border-radius:6px;border:1px solid #ccc;width:100%}
+    button{padding:10px 14px;border-radius:8px;border:0;background:#0b7cff;color:#fff;font-weight:600;cursor:pointer}
+    button.secondary{background:#6b7280}
+    .numbers{display:flex;gap:12px;margin-top:12px}
+    .chip{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:#f3f4f6;border:1px solid #ddd}
+    pre{background:#f8fafc;padding:12px;border-radius:6px;overflow:auto}
+    .row{display:flex;gap:8px}
+    .meta{font-size:0.95rem;color:#374151;margin-top:8px}
+    .actions{display:flex;gap:8px;margin-top:12px}
+    .doc h2{margin-top:18px}
+    footer{margin-top:18px;font-size:0.9rem;color:#6b7280}
+    @media(max-width:520px){.numbers{gap:8px}.chip{width:52px;height:52px}}
+  </style>
 </head>
 <body>
-
-  <iframe src="kwikpick.html" width="100%" height="600" style="border:1px solid #ccc;border-radius:8px;margin-top:20px;"></iframe>
+  <header>
+  <h1>KwikPick Generator — 3 Numbers</h1>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="lunchtime.html">Lunchtime</a> |
+    <a href="teatime.html">Teatime</a> |
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
 </body>
 </html>
