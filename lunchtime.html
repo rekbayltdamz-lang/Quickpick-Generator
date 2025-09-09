@@ -4,6 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>KwikPick Lunchtime Generator — 5 Number QuickPick</title>
+<meta name="description" content="">
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date();
+      const options = { day: 'numeric', month: 'long', year: 'numeric' };
+      const formattedDate = today.toLocaleDateString("en-GB", options);
+      document.querySelector("meta[name='description']").setAttribute(
+        "content",
+        `Generate 5 kwikpick numbers for UK49s Lunchtime lottery. Page is updated at ${formattedDate}.`
+      );
+    });
+  </script>
   <style>
     :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.4}
     body{max-width:900px;margin:24px auto;padding:18px;color:#111}
